@@ -51,7 +51,7 @@ contract SolnSquareVerifier is ERC721Mintable, Verifier {
     // TODO Create a function to mint new NFT only after the solution has been verified
     //  - make sure the solution is unique (has not been used before)
     //  - make sure you handle metadata as well as tokenSuplly
-    function mint(address solutionAddress, uint256 tokenId) public returns (bool) {
+    function mintNewNFT(address solutionAddress, uint256 tokenId) public returns (bool) {
         require(solutions[tokenId].solutionAddress != address(0));
         Solution memory solution = solutions[tokenId];
         bool verification = verifierContract.verifyTx(solution.a, solution.a_p, solution.b, solution.b_p, solution.c, solution.c_p, solution.h, solution.k, solution.input);
