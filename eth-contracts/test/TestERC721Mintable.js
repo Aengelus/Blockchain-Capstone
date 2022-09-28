@@ -4,6 +4,7 @@ contract('TestERC721Mintable', accounts => {
 
     const account_one = accounts[0];
     const account_two = accounts[1];
+    const account_three = accounts[2];
     const TOTAL_SUPPLY = 10;
 
     describe('match erc721 spec', function () {
@@ -21,9 +22,9 @@ contract('TestERC721Mintable', accounts => {
             assert(totalSupply == TOTAL_SUPPLY);
         })
         
-        it('should get token balance', async function () { 
-            let totalSupply = await this.contract.balanceOf.call(account_one);
-            assert(totalSupply == TOTAL_SUPPLY/2);
+        it('should get token balance', async function () {
+            let balance = await this.contract.balanceOf.call(account_two, { from: account_two })
+            assert.equal(balance.toNumber(), 1, "Incorrect balance of given account");
         })
 
         // token uri should be complete i.e: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/1
@@ -34,10 +35,11 @@ contract('TestERC721Mintable', accounts => {
         })
 
         it('should transfer token from one owner to another', async function () { 
-            let result = await this.contract.approve(account_two, 1, {from: account_one});
-            result = await this.contract.transferFrom(account_one, account_two, 1, {from: account_one});
-            result = await this.contract.ownerOf.call(1);
-            assert(result == account_two);
+            let tokenId = 1
+            await this.contract.transferFrom(account_two, account_three, tokenId, { from: account_two});
+
+            let newOwner = await this.contract.ownerOf.call(tokenId, { from: account_three});
+            assert.equal(newOwner, account_three, "Transfer to transfer token from one account to the other failed!")
         })
     });
 
