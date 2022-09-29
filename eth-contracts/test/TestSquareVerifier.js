@@ -15,7 +15,7 @@ contract('TestSquareVerifier', accounts => {
     // - use the contents from proof.json generated from zokrates steps
     it('Verification with correct proof', async () => {
         let result = await verifier.verifyTx.call(proof.A, proof.A_p, proof.B, proof.B_p, proof.C, proof.C_p, proof.H, proof.K, proofTree.input);
-        assert(result == false);
+        assert(result == true);
     });
     
     // Test verification with incorrect proof
